@@ -1,3 +1,4 @@
+import datetime
 import typing
 
 from twitter-feed.code.user import User
@@ -12,5 +13,10 @@ class Tweet:
         hashtags: typing.List[str] = None,
         mentions: typing.List[str] = None,
         user: User = None
-        ):
-        pass
+    ):
+        self.id_ = id_
+        self.text = text
+        self.date = date
+        self.hashtags = hashtags
+        self.mentions = mentions
+        self.user = user
