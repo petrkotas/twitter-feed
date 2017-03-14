@@ -13,7 +13,17 @@ def home_timeline():
     api = MockAPI()
 
     tweets = Tweet.tweets_from_list(api.get_home_timeline())
-    feed = tweets_to_atom(tweets, 'MyFeed', request.url, request.host_url)
+    feed = tweets_to_atom(tweets, 'Home feed', request.url, request.host_url)
+
+    return feed.get_response()
+
+
+@rest_view.route('/users/<user:string>', methods=['GET'])
+def user_timeline(user):
+    api = MockAPI()
+
+    tweets = Tweet.tweets_from_list(api.get_user_timeline(user))
+    feed = tweets_to_atom(tweets, 'Feed for ' + user, request.url, request.host_url)
 
     return feed.get_response()
 
