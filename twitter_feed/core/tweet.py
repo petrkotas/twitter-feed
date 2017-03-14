@@ -1,5 +1,6 @@
 import typing
 
+from twitter_feed.core.user import User
 
 
 class Tweet:
@@ -19,3 +20,14 @@ class Tweet:
         self.hashtags = hashtags
         self.mentions = mentions
         self.user = user
+
+    @classmethod
+    def from_dict(cls, tweet_dict: dict = None):
+        return cls(
+            id_=tweet_dict['id_str'],
+            text=tweet_dict['text'],
+            date=tweet_dict['created_at'],
+            hashtags=tweet_dict['hashtags'],
+            mentions=tweet_dict['mentions'],
+            user=User.from_dict(tweet_dict['user'])
+        )
