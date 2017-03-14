@@ -1,15 +1,10 @@
-
-class User:
+class Hashtag:
 
     def __init__(
         self,
-        name: str = None,
-        id_: str = None,
-        screen_name: str = None
+        text: str = None
     ):
-        self.id_ = id_
-        self.name = name
-        self.screen_name = screen_name
+        self.text = text
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -22,9 +17,7 @@ class User:
         return NotImplemented
 
     @classmethod
-    def from_dict(cls, user_dict: dict):
+    def from_dict(cls, hashtag_dict: dict):
         return cls(
-            name=user_dict.get('name'),
-            id_=user_dict.get('id_str'),
-            screen_name=user_dict.get('screen_name')
+            text=hashtag_dict.get('text')
         )
