@@ -16,7 +16,7 @@ def test_tweet_full():
             'id_str': '119476949',
         },
         'entities': {
-            'mentions': [
+            'user_mentions': [
                 {
                     'name': 'Cal',
                     'id_str': '17445752',
@@ -37,8 +37,8 @@ def test_tweet_full():
     assert test_tweet.text == tweet_dict['text']
     assert test_tweet.user == User.from_dict(tweet_dict['user'])
 
-    assert len(test_tweet.mentions) == len(tweet_dict['entities']['mentions'])
-    for user_mention, mention in zip(test_tweet.mentions, tweet_dict['entities']['mentions']):
+    assert len(test_tweet.mentions) == len(tweet_dict['entities']['user_mentions'])
+    for user_mention, mention in zip(test_tweet.mentions, tweet_dict['entities']['user_mentions']):
         assert user_mention == User.from_dict(mention)
 
     assert len(test_tweet.hashtags) == len(tweet_dict['entities']['hashtags'])
@@ -58,7 +58,7 @@ def test_tweet_incomplete():
             'id_str': '119476949',
         },
         'entities': {
-            'mentions': [
+            'user_mentions': [
                 {
                     'name': 'Cal',
                     'id_str': '17445752'
@@ -78,8 +78,8 @@ def test_tweet_incomplete():
     assert test_tweet.text == tweet_dict['text']
     assert test_tweet.user == User.from_dict(tweet_dict['user'])
 
-    assert len(test_tweet.mentions) == len(tweet_dict['entities']['mentions'])
-    for user_mention, mention in zip(test_tweet.mentions, tweet_dict['entities']['mentions']):
+    assert len(test_tweet.mentions) == len(tweet_dict['entities']['user_mentions'])
+    for user_mention, mention in zip(test_tweet.mentions, tweet_dict['entities']['user_mentions']):
         assert user_mention == User.from_dict(mention)
 
     assert len(test_tweet.hashtags) == len(tweet_dict['entities']['hashtags'])
