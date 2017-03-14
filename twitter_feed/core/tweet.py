@@ -1,7 +1,6 @@
-import datetime
 import typing
 
-from twitter-feed.code.user import User
+
 
 class Tweet:
 
