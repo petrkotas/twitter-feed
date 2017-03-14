@@ -39,12 +39,17 @@ class Tweet:
             id_=tweet_dict.get('id_str'),
             text=tweet_dict.get('text'),
             date=datetime.strptime(tweet_dict.get('created_at'), '%a %b %d %X %z %Y'),
-            hashtags=[Hashtag.from_dict(hsh) for hsh in tweet_dict.get('hashtags')],
-            mentions=[User.from_dict(usr) for usr in tweet_dict.get('mentions')],
+            hashtags=[Hashtag.from_dict(hsh) for hsh in tweet_dict.get('entities').get('hashtags')],
+            mentions=[User.from_dict(usr) for usr in tweet_dict.get('entities').get('user_mentions')],
             user=User.from_dict(tweet_dict['user'])
         )
 
-    @staticmethod
-    def tweets_from_list(tweets_list: typing.List[dict]):
+    @classmethod
+    def tweets_from_list(cls, tweets_list: typing.List[dict]):
+        tweets = []
         for tweet_dict in tweets_list:
-            pass
+            tweets.append(
+                cls.from_dict(tweet_dict)
+            )
+
+        return tweets
