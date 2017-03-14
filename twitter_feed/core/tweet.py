@@ -43,3 +43,8 @@ class Tweet:
             mentions=[User.from_dict(usr) for usr in tweet_dict.get('mentions')],
             user=User.from_dict(tweet_dict['user'])
         )
+
+    @staticmethod
+    def tweets_from_list(tweets_list: typing.List[dict]):
+        for tweet_dict in tweets_list:
+            pass
