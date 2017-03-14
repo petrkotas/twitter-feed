@@ -1,5 +1,7 @@
 import datetime
 
+import dateutil.parser
+
 from twitter_feed.core.tweet import Tweet
 from twitter_feed.core.user import User
 from twitter_feed.core.hashtag import Hashtag
@@ -45,7 +47,7 @@ def test_tweet_full():
     for tweet_hashtag, hashtag in zip(test_tweet.hashtags, tweet_dict['entities']['hashtags']):
         assert tweet_hashtag == Hashtag.from_dict(hashtag)
 
-    assert test_tweet.date == datetime.datetime.strptime(tweet_dict['created_at'], '%a %b %d %X %z %Y')
+    assert test_tweet.date == dateutil.parser.parse(tweet_dict['created_at'])
 
 
 def test_tweet_incomplete():
@@ -86,7 +88,7 @@ def test_tweet_incomplete():
     for tweet_hashtag, hashtag in zip(test_tweet.hashtags, tweet_dict['entities']['hashtags']):
         assert tweet_hashtag == Hashtag.from_dict(hashtag)
 
-    assert test_tweet.date == datetime.datetime.strptime(tweet_dict['created_at'], '%a %b %d %X %z %Y')
+    assert test_tweet.date == dateutil.parser.parse(tweet_dict['created_at'])
 
 
 def test_tweet_list():
