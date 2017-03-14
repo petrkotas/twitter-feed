@@ -23,7 +23,7 @@ def tweets_to_atom(tweets: typing.List[Tweet], title: str=None, url: str = None,
             feed_content += hashtag.text + '; '
 
         entry = FeedEntry(
-            title=str(tweet.date.date) + tweet.user.name,
+            title=tweet.user.name,
             id='urn:twitter_id:' + tweet.id_,
             author={'name': tweet.user.screen_name},
             published=tweet.date,
