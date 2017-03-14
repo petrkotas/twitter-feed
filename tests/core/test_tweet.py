@@ -5,6 +5,7 @@ import dateutil.parser
 from twitter_feed.core.tweet import Tweet
 from twitter_feed.core.user import User
 from twitter_feed.core.hashtag import Hashtag
+from twitter_feed.mock.tweets import HOME_TIMELINE
 
 
 def test_tweet_full():
@@ -92,66 +93,9 @@ def test_tweet_incomplete():
 
 
 def test_tweet_list():
-    tweets_list = [
-        {
-            'created_at': 'Tue Aug 28 21:16:23 +0000 2012',
-            'id_str': '240558470661799936',
-            'entities': {
-                'urls': [
-                ],
-                'hashtags': [
-                    {
-                        'text': 'bagr'
-                    }
-                ],
-                'user_mentions': [
-                    {
-                        'name': 'OAuth Dancer',
-                        'screen_name': 'oauth_dancer',
-                        'id_str': '119476949',
-                    }
-                ]
-            },
-            'text': 'just another test',
-            'source': 'OAuth Dancer Reborn',
-            'user': {
-                'name': 'OAuth Dancer',
-                'created_at': 'Wed Mar 03 19:37:35 +0000 2010',
-                'id_str': '119476949',
-                'screen_name': 'oauth_dancer'
-            },
-        },
-        {
-            'created_at': 'Tue Aug 28 21:16:23 +0000 2012',
-            'id_str': '240558470661799936',
-            'entities': {
-                'urls': [
-                ],
-                'hashtags': [
-                    {
-                        'text': 'bagr'
-                    }
-                ],
-                'user_mentions': [
-                    {
-                        'name': 'OAuth Dancer',
-                        'screen_name': 'oauth_dancer',
-                        'id_str': '119476949',
-                    }
-                ]
-            },
-            'text': 'just another test',
-            'source': 'OAuth Dancer Reborn',
-            'user': {
-                'name': 'OAuth Dancer',
-                'created_at': 'Wed Mar 03 19:37:35 +0000 2010',
-                'id_str': '119476949',
-                'screen_name': 'oauth_dancer'
-            },
-        }
-    ]
 
-    tweets = Tweet.tweets_from_list(tweets_list)
+    tweets = Tweet.tweets_from_list(HOME_TIMELINE)
 
-    for tweet, tweet_dict in zip(tweets, tweets_list):
+    assert len(tweets) == len(HOME_TIMELINE)
+    for tweet, tweet_dict in zip(tweets, HOME_TIMELINE):
         assert tweet == Tweet.from_dict(tweet_dict)
