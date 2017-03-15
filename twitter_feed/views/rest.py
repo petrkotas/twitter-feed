@@ -24,7 +24,7 @@ def home_timeline():
     api = rest_view.api()
 
     try:
-        tweets = Tweet.tweets_from_list(api.get_home_timeline())
+        tweets = Tweet.tweets_from_list(api.get_user_timeline('petrkotas'))
     except TwitterError as error:
         message = {
             'status': error.html_error,
