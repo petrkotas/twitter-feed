@@ -28,9 +28,11 @@ setup(
         'Jinja2>=2.9.5',
         'lazy-object-proxy>=1.2.2',
         'MarkupSafe>=1.0',
+        'oauthlib==2.0.1',
         'py>=1.4.32',
         'python-dateutil>=2.6.0',
         'requests>=2.13.0',
+        'requests-oauthlib>=0.8.0'
         'six>=1.10.0',
         'Werkzeug>=0.12',
     ],
