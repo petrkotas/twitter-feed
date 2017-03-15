@@ -11,7 +11,7 @@ from twitter_feed.mock.tweets import HOME_TIMELINE
 
 @pytest.fixture
 def rest_app():
-    return make_app()
+    return make_app(api='dev')
 
 
 @pytest.fixture
