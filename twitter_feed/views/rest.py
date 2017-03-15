@@ -2,11 +2,11 @@ from flask import Blueprint, jsonify, request
 
 from twitter_feed.core.serializers.tweet_serializer import tweets_to_atom
 from twitter_feed.core.tweet import Tweet
-from twitter_feed.twitter.api import TwitterError
+from twitter_feed.twitter.api import TwitterError, TwitterAPI
 
 
 rest_view = Blueprint('rest_view', __name__, url_prefix='/rest')
-rest_view.api = None
+rest_view.api = TwitterAPI
 
 
 @rest_view.record
