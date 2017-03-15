@@ -34,3 +34,22 @@ def test_api_auth_fail(monkeypatch):
             }
         ]
     }
+
+
+def test_api_auth_ok(monkeypatch):
+    def fake_post(*args, **kwargs):
+        class Response:
+            status_code = 200
+
+            def json(self):
+                return {
+                    'access_token': 'blabla'
+                }
+        return Response()
+
+        # replace requests post with my fake post
+        monkeypatch.setattr(requests, 'post', fake_post)
+
+        api = TwitterAPI('url', 'test', 'fail')
+
+        assert api.auth_token == 'blabla'
