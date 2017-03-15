@@ -30,6 +30,9 @@ class MockAPI:
     def get_hashtag_timeline(self, hashtag: str = None) -> typing.List[dict]:
         return USER_TIMELINE
 
+    def get_user_replies(self, user) -> typing.List[dict]:
+        return USER_TIMELINE
+
 
 class TwitterAPI:
     TWITTER_AUTH = 'https://api.twitter.com/oauth2/token'
@@ -83,7 +86,7 @@ class TwitterAPI:
         response = self.call_api(method='search/tweets.json', params={'q': '#{}'.format(hashtag), 'count': 30})
         return response.get('statuses')
 
-    def get_user_mentions(self, user) -> typing.List[dict]:
-        response = self.call_api(method='search/tweets.json', params={'q': '@{}'.format(user), 'count': 30})
+    def get_user_replies(self, user) -> typing.List[dict]:
+        response = self.call_api(method='search/tweets.json', params={'q': 'to:{}'.format(user)})
         return response.get('statuses')
 
