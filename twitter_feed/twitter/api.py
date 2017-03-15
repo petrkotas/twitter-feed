@@ -18,6 +18,9 @@ class TwitterError(Exception):
 
 class MockAPI:
 
+    def __init__(self, *args, **kwargs):
+        pass
+
     def get_home_timeline(self) -> typing.List[dict]:
         return HOME_TIMELINE
 
