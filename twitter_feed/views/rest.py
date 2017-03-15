@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 
 from twitter_feed.core.serializers.tweet_serializer import tweets_to_atom
 from twitter_feed.core.tweet import Tweet
+from twitter_feed.core.tweet_util import match_tweet_replies
 from twitter_feed.twitter.api import TwitterError, TwitterAPI
 
 
@@ -21,9 +22,9 @@ def record_params(setup_state):
 
 @rest_view.route('/', methods=['GET'])
 def home_timeline():
-    api = rest_view.api()
 
     try:
+        api = rest_view.api(rest_view.config.get('API_URL'), rest_view.config.get('API_KEY'), rest_view.config.get('API_SECRET'))
         tweets = Tweet.tweets_from_list(api.get_user_timeline('petrkotas'))
     except TwitterError as error:
         message = {
@@ -54,7 +55,14 @@ def user_timeline(user):
 
     try:
         api = rest_view.api(rest_view.config.get('API_URL'), rest_view.config.get('API_KEY'), rest_view.config.get('API_SECRET'))
-        tweets = Tweet.tweets_from_list(api.get_user_timeline(user))
+        temp_tweets = Tweet.tweets_from_list(api.get_user_timeline(user))
+        replies = Tweet.tweets_from_list(api.get_user_replies(user))
+        tweets = []
+        for tweet in temp_tweets:
+            tweets.append(tweet)
+            repl = match_tweet_replies(tweet, replies)
+            if repl:
+                tweets.extend(repl)
     except TwitterError as error:
         message = {
             'status': error.html_error,
