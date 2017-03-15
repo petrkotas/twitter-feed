@@ -1,20 +1,17 @@
+import base64
 import typing
 from urllib.parse import urljoin
 
 import requests
-from oauthlib.oauth2 import BackendApplicationClient
-from requests_oauthlib import OAuth2Session
 
 from twitter_feed.mock.tweets import HOME_TIMELINE, USER_TIMELINE
 
 
 class TwitterError(Exception):
 
-    def __init__(self, html_error, html_status, twitter_error, twitter_status, *args, **kwargs):
-        self.html_status = html_error
+    def __init__(self, html_error: int, twitter_error: typing.List[dict], *args, **kwargs):
         self.html_error = html_error
         self.twitter_error = twitter_error
-        self.twitter_status = twitter_status
 
         super().__init__(*args, **kwargs)
 
@@ -32,16 +29,31 @@ class MockAPI:
 
 
 class TwitterAPI:
+    TWITTER_AUTH = 'https://api.twitter.com/oauth2/token'
 
     def __init__(self, api_url, api_key, api_secret):
         self.api_url = api_url
-        self.api_key = api_key
-        self.api_secret = api_secret
+        oauth2_token = '{}:{}'.format(
+            api_key, api_secret
+        )
 
-        client = BackendApplicationClient(client_id=self.api_key)
-        oauth = OAuth2Session(client=client)
+        headers = {
+            'Authorization': 'Basic {}'.format(
+                base64.b64encode(oauth2_token.encode('ascii')).decode('utf-8')
+            ),
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        }
+        body = 'grant_type=client_credentials'
 
-        self.auth_token = oauth.fetch_token(token_url=self.api_url, client_id=self.api_key, client_secret=self.api_secret)
+        response = requests.post(self.TWITTER_AUTH, headers=headers, data=body)
+
+        if response.status_code == 200:
+            self.auth_token = response.json().get('access_token')
+        else:
+            parsed = response.json()
+            exception = TwitterError(response.status_code, parsed)
+
+            raise exception
 
     def call_api(self, method=None, params=None):
         headers = {'Authorization': 'Bearer ' + self.auth_token}
@@ -50,7 +62,13 @@ class TwitterAPI:
 
         response = requests.get(url, headers=headers, params=params)
 
-        return response
+        if response.status_code == 200:
+            return response.json()
+        else:
+            parsed = response.json()
+            exception = TwitterError(response.status_code, parsed)
+
+            raise exception
 
     def get_home_timeline(self) -> typing.List[dict]:
         return []
@@ -59,5 +77,6 @@ class TwitterAPI:
         return self.call_api(method='statuses/user_timeline.json', params={'screen_name': user, 'count': 30})
 
     def get_hashtag_timeline(self, hashtag: str = None) -> typing.List[dict]:
-        return []
+        response = self.call_api(method='search/tweets.json', params={'q': '#{}'.format(hashtag), 'count': 30})
+        return response.get('statuses')
 

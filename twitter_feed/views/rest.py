@@ -7,12 +7,14 @@ from twitter_feed.twitter.api import TwitterError, TwitterAPI
 
 rest_view = Blueprint('rest_view', __name__, url_prefix='/rest')
 rest_view.api = TwitterAPI
+rest_view.config = {}
 
 
 @rest_view.record
 def record_params(setup_state):
     app = setup_state.app
-    if app.config['API'] == 'mock':
+    rest_view.config = dict([(key, value) for (key, value) in app.config.items()])
+    if app.config.get('API') == 'mock':
         from twitter_feed.twitter.api import MockAPI
         rest_view.api = MockAPI
 
@@ -49,14 +51,14 @@ def home_timeline():
 
 @rest_view.route('/users/<string:user>', methods=['GET'])
 def user_timeline(user):
-    api = rest_view.api()
 
     try:
+        api = rest_view.api(rest_view.config.get('API_URL'), rest_view.config.get('API_KEY'), rest_view.config.get('API_SECRET'))
         tweets = Tweet.tweets_from_list(api.get_user_timeline(user))
     except TwitterError as error:
         message = {
             'status': error.html_error,
-            'message': error.html_status + ', ' + str(error.twitter_error) + ': ' + error.twitter_status
+            'twitter_message': error.twitter_error
         }
         response = jsonify(message)
         response.status_code = error.html_error
@@ -79,14 +81,14 @@ def user_timeline(user):
 
 @rest_view.route('/hashtags/<string:hashtag>', methods=['GET'])
 def hashtag_timeline(hashtag):
-    api = rest_view.api()
 
     try:
+        api = rest_view.api(rest_view.config.get('API_URL'), rest_view.config.get('API_KEY'), rest_view.config.get('API_SECRET'))
         tweets = Tweet.tweets_from_list(api.get_hashtag_timeline(hashtag))
     except TwitterError as error:
         message = {
             'status': error.html_error,
-            'message': error.html_status + ', ' + str(error.twitter_error) + ': ' + error.twitter_status
+            'twitter_message': error.twitter_error
         }
         response = jsonify(message)
         response.status_code = error.html_error
