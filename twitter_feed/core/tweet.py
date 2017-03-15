@@ -16,7 +16,8 @@ class Tweet:
         date: str = None,
         hashtags: typing.List[str] = None,
         mentions: typing.List[str] = None,
-        user: User = None
+        user: User = None,
+        reply_to: str = None
     ):
         self.id_ = id_
         self.text = text
@@ -24,6 +25,7 @@ class Tweet:
         self.hashtags = hashtags
         self.mentions = mentions
         self.user = user
+        self.reply_to = reply_to
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -43,7 +45,8 @@ class Tweet:
             date=dateutil.parser.parse(tweet_dict.get('created_at')),
             hashtags=[Hashtag.from_dict(hsh) for hsh in tweet_dict.get('entities').get('hashtags')],
             mentions=[User.from_dict(usr) for usr in tweet_dict.get('entities').get('user_mentions')],
-            user=User.from_dict(tweet_dict['user'])
+            user=User.from_dict(tweet_dict['user']),
+            reply_to=tweet_dict.get('in_reply_to_status_id_str')
         )
 
     @classmethod
