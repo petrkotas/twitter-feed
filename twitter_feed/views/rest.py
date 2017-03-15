@@ -20,7 +20,7 @@ def record_params(setup_state):
         rest_view.api = MockAPI
 
 
-@rest_view.route('/', methods=['GET'])
+@rest_view.route('/', methods=['GET'], endpoint='home')
 def home_timeline():
 
     try:
@@ -50,7 +50,7 @@ def home_timeline():
     return response
 
 
-@rest_view.route('/users/<string:user>', methods=['GET'])
+@rest_view.route('/users/<string:user>', methods=['GET'], endpoint='user')
 def user_timeline(user):
 
     try:
@@ -87,7 +87,7 @@ def user_timeline(user):
     return response
 
 
-@rest_view.route('/hashtags/<string:hashtag>', methods=['GET'])
+@rest_view.route('/hashtags/<string:hashtag>', methods=['GET'], endpoint='hashtag')
 def hashtag_timeline(hashtag):
 
     try:

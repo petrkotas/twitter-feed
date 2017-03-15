@@ -1,6 +1,7 @@
 from flask import Flask
 
 from twitter_feed.config import config
+from twitter_feed.views.index import index_view
 from twitter_feed.views.rest import rest_view
 
 
@@ -22,6 +23,7 @@ def make_app(api=None):
 
     app.before_request(before_request)
 
+    app.register_blueprint(index_view)
     app.register_blueprint(rest_view)
 
     return app
