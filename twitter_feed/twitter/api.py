@@ -1,5 +1,7 @@
 import typing
 
+import requests
+
 from twitter_feed.mock.tweets import HOME_TIMELINE, USER_TIMELINE
 
 
@@ -24,3 +26,16 @@ class MockAPI:
 
     def get_hashtag_timeline(self, hashtag: str = None) -> typing.List[dict]:
         return USER_TIMELINE
+
+
+class TwitterAPI:
+
+    def get_home_timeline(self) -> typing.List[dict]:
+        return []
+
+    def get_user_timeline(self, user: str = None) -> typing.List[dict]:
+        return []
+
+    def get_hashtag_timeline(self, hashtag: str = None) -> typing.List[dict]:
+        return []
+
