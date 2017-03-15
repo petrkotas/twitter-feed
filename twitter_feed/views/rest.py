@@ -77,7 +77,7 @@ def user_timeline(user):
     return response
 
 
-@rest_view.route('/hashtag/<string:hashtag>', methods=['GET'])
+@rest_view.route('/hashtags/<string:hashtag>', methods=['GET'])
 def hashtag_timeline(hashtag):
     api = rest_view.api()
 
