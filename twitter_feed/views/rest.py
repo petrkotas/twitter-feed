@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 
 from twitter_feed.core.serializers.tweet_serializer import tweets_to_atom
 from twitter_feed.core.tweet import Tweet
-from twitter_feed.twitter.api import MockAPI
+from twitter_feed.twitter.api import MockAPI, TwitterError
 
 
 API = MockAPI
@@ -13,7 +13,17 @@ rest_view = Blueprint('rest_view', __name__, url_prefix='/rest')
 def home_timeline():
     api = API()
 
-    tweets = Tweet.tweets_from_list(api.get_home_timeline())
+    try:
+        tweets = Tweet.tweets_from_list(api.get_home_timeline())
+    except TwitterError as error:
+        message = {
+            'status': error.html_error,
+            'message': error.html_status + ', ' + str(error.twitter_error) + ': ' + error.twitter_status
+        }
+        response = jsonify(message)
+        response.status_code = error.html_error
+
+        return response
 
     try:
         feed = tweets_to_atom(tweets, 'Home feed', request.url, request.host_url)
@@ -33,7 +43,17 @@ def home_timeline():
 def user_timeline(user):
     api = API()
 
-    tweets = Tweet.tweets_from_list(api.get_user_timeline(user))
+    try:
+        tweets = Tweet.tweets_from_list(api.get_user_timeline(user))
+    except TwitterError as error:
+        message = {
+            'status': error.html_error,
+            'message': error.html_status + ', ' + str(error.twitter_error) + ': ' + error.twitter_status
+        }
+        response = jsonify(message)
+        response.status_code = error.html_error
+
+        return response
 
     try:
         feed = tweets_to_atom(tweets, 'Feed for ' + user, request.url, request.host_url)
@@ -53,7 +73,17 @@ def user_timeline(user):
 def hashtag_timeline(hashtag):
     api = API()
 
-    tweets = Tweet.tweets_from_list(api.get_hashtag_timeline(hashtag))
+    try:
+        tweets = Tweet.tweets_from_list(api.get_hashtag_timeline(hashtag))
+    except TwitterError as error:
+        message = {
+            'status': error.html_error,
+            'message': error.html_status + ', ' + str(error.twitter_error) + ': ' + error.twitter_status
+        }
+        response = jsonify(message)
+        response.status_code = error.html_error
+
+        return response
 
     try:
         feed = tweets_to_atom(tweets, 'Feed for ' + hashtag, request.url, request.host_url)
