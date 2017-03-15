@@ -10,3 +10,6 @@ class MockAPI:
 
     def get_user_timeline(self, user: str = None) -> typing.List[dict]:
         return USER_TIMELINE
+
+    def get_hashtag_timeline(self, hashtag: str = None) -> typing.List[dict]:
+        return USER_TIMELINE
