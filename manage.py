@@ -20,14 +20,6 @@ def make_shell_context():
 
 
 @manager.command
-def runproduction():
-    '''
-    Run webserver on cherry py as production db admin
-    '''
-    pass
-
-
-@manager.command
 def config():
     '''
     List sorted config options in the application

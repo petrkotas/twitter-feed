@@ -24,6 +24,8 @@ setup(
         'feedparser>=5.2.1',
         'Flask>=0.12',
         'Flask-Script>=2.0.5',
+        'gevent>=1.2.1',
+        'greenlet>=0.4.12',
         'itsdangerous>=0.24',
         'Jinja2>=2.9.5',
         'lazy-object-proxy>=1.2.2',
@@ -36,7 +38,11 @@ setup(
         'six>=1.10.0',
         'Werkzeug>=0.12',
     ],
-    tests_require=['coverage', 'pytest'],
+    entry_points={
+        'console_scripts': [
+            'twitter-feed=twitter_feed.server:main',
+        ],
+    },
     classifiers=[
         'Development Status :: 4 - Beta',
         # 'Development Status :: 5 - Production/Stable',
