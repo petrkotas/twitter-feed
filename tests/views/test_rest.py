@@ -1,4 +1,3 @@
-import json
 import pytest
 
 import dateutil
@@ -22,7 +21,7 @@ def test_client(rest_app):
 def test_home_timeline(test_client):
     response = test_client.get('/rest/')
     feed = feedparser.parse(response.data)
-    tweets = Tweet.tweets_from_list(HOME_TIMELINE)
+    tweets = Tweet.tweets_from_list(USER_TIMELINE)
 
     assert feed.feed.title == 'Home feed'
 
