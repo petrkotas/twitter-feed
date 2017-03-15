@@ -3,6 +3,17 @@ import typing
 from twitter_feed.mock.tweets import HOME_TIMELINE, USER_TIMELINE
 
 
+class TwitterError(Exception):
+
+    def __init__(self, html_error, html_status, twitter_error, twitter_status, *args, **kwargs):
+        self.html_status = html_error
+        self.html_error = html_error
+        self.twitter_error = twitter_error
+        self.twitter_status = twitter_status
+
+        super().__init__(*args, **kwargs)
+
+
 class MockAPI:
 
     def get_home_timeline(self) -> typing.List[dict]:
