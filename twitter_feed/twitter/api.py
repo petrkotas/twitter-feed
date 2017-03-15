@@ -74,12 +74,16 @@ class TwitterAPI:
             raise exception
 
     def get_home_timeline(self) -> typing.List[dict]:
-        return []
+        raise NotImplementedError
 
     def get_user_timeline(self, user: str = None) -> typing.List[dict]:
         return self.call_api(method='statuses/user_timeline.json', params={'screen_name': user, 'count': 30})
 
     def get_hashtag_timeline(self, hashtag: str = None) -> typing.List[dict]:
         response = self.call_api(method='search/tweets.json', params={'q': '#{}'.format(hashtag), 'count': 30})
+        return response.get('statuses')
+
+    def get_user_mentions(self, user) -> typing.List[dict]:
+        response = self.call_api(method='search/tweets.json', params={'q': '@{}'.format(user), 'count': 30})
         return response.get('statuses')
 
