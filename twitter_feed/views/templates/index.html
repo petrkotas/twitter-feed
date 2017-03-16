@@ -14,8 +14,10 @@
     <div>
         <h2>Available endpoints:</h2>
         <p><a href="{{ url_for('rest_view.home') }}">{{ url_for('rest_view.home') }}: My home timeline</a></p>
-        <p><a href="{{ url_for('rest_view.user', user='NASA') }}">{{ url_for('rest_view.user', user='NASA') }}: NASA timeline, with replies following the tweet.</a></p>
-        <p><a href="{{ url_for('rest_view.hashtag', hashtag='python') }}">{{ url_for('rest_view.hashtag', hashtag='python') }}: Tweets with python</a></p>
+        <p><a href="{{ url_for('rest_view.user', user='NASA') }}">
+            {{ url_for('rest_view.user', user='NASA') }}: NASA timeline, with replies following the tweet. You can change NASA for anything.</a></p>
+        <p><a href="{{ url_for('rest_view.hashtag', hashtag='python') }}">
+            {{ url_for('rest_view.hashtag', hashtag='python') }}: Tweets with python. You can choose you own hashtag.</a></p>
         <p>Coded with love by Petr Kotas</p>
     </div>
 </article>
